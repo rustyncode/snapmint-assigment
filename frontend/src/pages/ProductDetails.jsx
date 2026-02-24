@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import { CheckCircle2, ArrowLeft, Info, Percent, Calendar, ShieldCheck } from 'lucide-react';
+import { CheckCircle2, ArrowLeft, Info, Percent, Calendar, ShieldCheck, Wallet } from 'lucide-react';
 
 const ProductDetails = () => {
     const { id } = useParams();

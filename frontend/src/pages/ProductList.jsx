@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { ArrowRight, Star, ShieldCheck, ShoppingBag } from 'lucide-react';
+import { ArrowRight, Star, ShieldCheck, ShoppingBag, Wallet } from 'lucide-react';
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
