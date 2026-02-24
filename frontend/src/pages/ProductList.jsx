@@ -23,7 +23,7 @@ const ProductList = () => {
     if (loading) return (
         <div className="flex flex-col justify-center items-center h-[60vh] space-y-4">
             <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-slate-400 font-medium tracking-wide">Loading 1Fi Catalog...</p>
+            <p className="text-slate-400 font-medium tracking-wide">Loading SNAPMINT Catalog...</p>
         </div>
     );
 
@@ -97,7 +97,7 @@ const ProductList = () => {
             </div>
 
             <div className="mt-24 p-12 bg-gradient-to-br from-blue-600/10 to-transparent border border-blue-500/10 rounded-[3rem] text-center">
-                <h4 className="text-2xl font-bold mb-4">Why choose 1Fi Backed EMI?</h4>
+                <h4 className="text-2xl font-bold mb-4">Why choose SNAPMINT Backed EMI?</h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
                     {[
                         { title: 'Zero Interest', desc: 'Select plans with 0% interest rates backed by low-risk mutual funds.' },

@@ -12,7 +12,7 @@ A premium full-stack product EMI application built with React, Node.js, and Mong
 - **Dynamic Product Engine:** All data fetched via APIs from a dedicated database.
 - **Advanced Variant Management:** Dynamic selection of Color and Storage with instant price/image updates.
 - **Interactive EMI Calculator:** Plans displaying monthly amounts, tenures, interest rates, and cashback rewards.
-- **Mutual Fund Theme:** Integrated messaging and UI elements for the 1Fi fintech theme.
+- **Mutual Fund Theme:** Integrated messaging and UI elements for the SNAPMINT fintech theme.
 - **Responsive & Premium UI:** Desktop and mobile-optimized design with a dark, modern aesthetic.
 
 ## Repository Link
@@ -121,4 +121,4 @@ npm run dev
 - `monthlyAmount`: Number
 
 ---
-*Created for the 1Fi Full Stack Developer Assignment.*
+*Created for the SNAPMINT Full Stack Developer Assignment.*

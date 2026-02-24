@@ -6,10 +6,7 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors({
-    origin: ['https://snapmint-clone.vercel.app', 'http://localhost:5173'],
-    credentials: true
-}));
+app.use(cors()); // Allow all origins for Vercel dynamic previews
 app.use(express.json());
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -35,6 +32,7 @@ app.use((req, res, next) => {
 const productRoutes = require('./routes/productRoutes');
 app.get('/', (req, res) => res.send('SNAPMINT Backend API Running'));
 app.use('/api/products', productRoutes);
+app.use('/products', productRoutes); // Support both styles of frontend calls
 
 if (process.env.NODE_ENV !== 'production') {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
