@@ -6,7 +6,7 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(cors()); // This line already allows all origins by default
 app.use(express.json());
 
 const MONGODB_URI = process.env.MONGODB_URI;
