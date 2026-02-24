@@ -6,7 +6,10 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors()); // This line already allows all origins by default
+app.use(cors({
+    origin: ['https://snapmint-clone.vercel.app', 'http://localhost:5173'],
+    credentials: true
+}));
 app.use(express.json());
 
 const MONGODB_URI = process.env.MONGODB_URI;
