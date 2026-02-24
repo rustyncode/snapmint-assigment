@@ -9,6 +9,7 @@ const ProductDetails = () => {
     const [selectedVariant, setSelectedVariant] = useState(null);
     const [selectedPlan, setSelectedPlan] = useState(null);
     const [showSuccess, setShowSuccess] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const apiUrl = import.meta.env.VITE_API_URL;
