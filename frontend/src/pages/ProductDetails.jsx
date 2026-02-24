@@ -27,16 +27,16 @@ const ProductDetails = () => {
     }, [id]);
 
     if (loading) return (
-        <div className="flex flex-col justify-center items-center h-screen space-y-4 text-blue-400">
+        <div className="flex flex-col justify-center items-center h-[60vh] space-y-4 text-teal-600">
             <div className="w-12 h-12 border-4 border-current border-t-transparent rounded-full animate-spin"></div>
-            <p className="font-medium animate-pulse">Fetching product details...</p>
+            <p className="font-medium animate-pulse">Loading Product Details...</p>
         </div>
     );
 
     if (!product) return (
-        <div className="text-center py-20">
+        <div className="text-center py-20 bg-white rounded-3xl shadow-sm border border-slate-200">
             <h2 className="text-2xl font-bold mb-4">Product not found</h2>
-            <Link to="/" className="text-blue-400 hover:underline flex items-center justify-center gap-2">
+            <Link to="/" className="text-teal-600 hover:underline flex items-center justify-center gap-2">
                 <ArrowLeft className="w-4 h-4" /> Back to store
             </Link>
         </div>
@@ -45,180 +45,161 @@ const ProductDetails = () => {
     const colors = [...new Set(product.variants.map(v => v.color))];
     const storages = [...new Set(product.variants.filter(v => v.color === selectedVariant.color).map(v => v.storage))];
 
-    const handleColorChange = (color) => {
-        const newVariant = product.variants.find(v => v.color === color && v.storage === selectedVariant.storage)
-            || product.variants.find(v => v.color === color);
-        setSelectedVariant(newVariant);
-    };
-
-    const handleStorageChange = (storage) => {
-        const newVariant = product.variants.find(v => v.color === selectedVariant.color && v.storage === storage);
-        setSelectedVariant(newVariant);
-    };
-
     return (
-        <div className="max-w-6xl mx-auto px-4">
-            <Link to="/" className="inline-flex items-center gap-2 text-slate-400 hover:text-white mb-8 transition-colors">
-                <ArrowLeft className="w-4 h-4" /> Back to Products
-            </Link>
+        <div className="max-w-7xl mx-auto space-y-6">
+            {/* Breadcrumbs */}
+            <div className="text-xs text-slate-500 flex items-center gap-2 px-2">
+                <Link to="/" className="hover:text-teal-600">Shop on EMI</Link>
+                <span>&gt;</span>
+                <span className="hover:text-teal-600 cursor-pointer">Smart Phones</span>
+                <span>&gt;</span>
+                <span className="text-slate-900 font-bold">{product.name}</span>
+            </div>
 
-            <div className="flex flex-col lg:flex-row gap-16">
-                {/* Gallery */}
-                <div className="lg:w-1/2">
-                    <div className="bg-slate-800/50 rounded-[2.5rem] p-12 border border-slate-700/50 backdrop-blur-sm sticky top-28 group">
-                        <img
-                            src={selectedVariant.image}
-                            alt={selectedVariant.name}
-                            className="w-full h-auto object-contain mix-blend-lighten transform group-hover:scale-105 transition-transform duration-700"
-                        />
-                    </div>
+            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden flex flex-col lg:flex-row min-h-[600px]">
+                {/* Thumbnails Sidebar - Hidden on small screens */}
+                <div className="hidden md:flex flex-col gap-4 p-6 border-r border-slate-100 bg-slate-50/30 w-24">
+                    {[1, 2, 3, 4].map(i => (
+                        <div key={i} className={`aspect-square rounded-xl border-2 p-1 cursor-pointer transition-all ${i === 1 ? 'border-teal-500 bg-white' : 'border-slate-200 bg-white hover:border-slate-300'}`}>
+                            <img src={selectedVariant.image} alt="thumb" className="w-full h-full object-contain" />
+                        </div>
+                    ))}
+                </div>
 
-                    <div className="mt-8 bg-blue-500/5 border border-blue-500/10 rounded-2xl p-6">
-                        <div className="flex items-start gap-4">
-                            <div className="bg-blue-500/20 p-2 rounded-lg shrink-0">
-                                <ShieldCheck className="w-6 h-6 text-blue-400" />
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-blue-400 mb-1 text-sm uppercase tracking-wider">Mutual Fund Backed EMI</h4>
-                                <p className="text-slate-400 text-sm leading-relaxed">
-                                    Your purchase is secured and funded via high-yield short-term mutual funds. This structure ensures <strong>0% processing fees</strong> and guaranteed cashback returns for consistent payers.
-                                </p>
-                            </div>
+                {/* Main Product Image Container */}
+                <div className="flex-grow p-10 flex flex-col items-center justify-center relative bg-white">
+                    <img
+                        src={selectedVariant.image}
+                        alt={selectedVariant.name}
+                        className="max-w-md w-full h-auto object-contain transform hover:scale-105 transition-transform duration-700"
+                    />
+
+                    <div className="mt-12 flex gap-4 w-full max-w-sm">
+                        <div className="flex-1 bg-slate-50 px-4 py-2 rounded-xl border border-slate-200 flex flex-col text-center">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase">Color</span>
+                            <span className="text-sm font-bold text-slate-800">{selectedVariant.color}</span>
+                        </div>
+                        <div className="flex-1 bg-slate-50 px-4 py-2 rounded-xl border border-slate-200 flex flex-col text-center">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase">Storage</span>
+                            <span className="text-sm font-bold text-slate-800">{selectedVariant.storage}</span>
                         </div>
                     </div>
                 </div>
 
-                {/* Info */}
-                <div className="lg:w-1/2">
+                {/* Pricing and EMI Sidebar */}
+                <div className="lg:w-[450px] bg-sky-50/50 p-8 border-l border-slate-100 flex flex-col">
+                    <div className="mb-6">
+                        <h1 className="text-2xl font-black text-slate-900 mb-1 leading-tight">{product.name}</h1>
+                        <p className="text-slate-500 text-sm italic">(Storage: {selectedVariant.storage}, Color: {selectedVariant.color})</p>
+                    </div>
+
                     <div className="mb-8">
-                        <h1 className="text-5xl font-extrabold mb-4 tracking-tight leading-[1.1]">{product.name}</h1>
-                        <p className="text-slate-400 text-lg leading-relaxed">{product.description}</p>
+                        <div className="text-3xl font-black text-slate-900">₹{selectedVariant.price.toLocaleString()}</div>
                     </div>
 
-                    <div className="flex items-baseline gap-4 mb-10">
-                        <span className="text-4xl font-black text-blue-400">₹{selectedVariant.price.toLocaleString()}</span>
-                        <span className="text-xl text-slate-500 line-through">₹{selectedVariant.mrp.toLocaleString()}</span>
-                        <div className="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full border border-emerald-500/20">
-                            {Math.round((1 - selectedVariant.price / selectedVariant.mrp) * 100)}% OFF
+                    {/* EMI Selection Box */}
+                    <div className="bg-white rounded-3xl border border-teal-100 p-6 shadow-xl shadow-teal-500/5 space-y-6">
+                        <div className="flex items-center gap-2 text-teal-700">
+                            <Wallet className="w-5 h-5" />
+                            <span className="font-bold text-sm">Pay Now : ₹19 Downpayment</span>
                         </div>
-                    </div>
 
-                    {/* Color Selection */}
-                    <div className="mb-8">
-                        <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500 mb-4">Select Finish</h3>
-                        <div className="flex flex-wrap gap-3">
-                            {colors.map(color => (
-                                <button
-                                    key={color}
-                                    onClick={() => handleColorChange(color)}
-                                    className={`px-5 py-2.5 rounded-xl border-2 transition-all duration-300 font-medium ${selectedVariant.color === color
-                                        ? 'border-blue-500 bg-blue-500/10 text-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.15)]'
-                                        : 'border-slate-700 bg-slate-800/50 text-slate-400 hover:border-slate-500 hover:text-slate-200'
-                                        }`}
-                                >
-                                    {color}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Storage Selection */}
-                    <div className="mb-12">
-                        <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500 mb-4">Select Capacity</h3>
-                        <div className="flex flex-wrap gap-3">
-                            {storages.map(storage => (
-                                <button
-                                    key={storage}
-                                    onClick={() => handleStorageChange(storage)}
-                                    className={`px-5 py-2.5 rounded-xl border-2 transition-all duration-300 font-medium ${selectedVariant.storage === storage
-                                        ? 'border-blue-500 bg-blue-500/10 text-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.15)]'
-                                        : 'border-slate-700 bg-slate-800/50 text-slate-400 hover:border-slate-500 hover:text-slate-200'
-                                        }`}
-                                >
-                                    {storage}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* EMI Plans Selection */}
-                    <div className="mb-12">
-                        <div className="flex justify-between items-center mb-6">
-                            <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Available EMI Plans</h3>
-                            <span className="text-[10px] text-blue-400 bg-blue-400/10 px-2 py-0.5 rounded border border-blue-400/20 font-bold">SNAPMINT EXCLUSIVE</span>
-                        </div>
-                        <div className="space-y-4">
+                        <div className="space-y-3">
+                            <h3 className="text-sm font-black text-slate-800">Choose EMI Tenure</h3>
                             {product.emiPlans.map(plan => (
-                                <div
-                                    key={plan.id}
-                                    onClick={() => setSelectedPlan(plan)}
-                                    className={`p-6 rounded-3xl border-2 cursor-pointer transition-all duration-300 group flex justify-between items-center ${selectedPlan.id === plan.id
-                                        ? 'border-blue-500 bg-blue-500/10 ring-4 ring-blue-500/5'
-                                        : 'border-slate-700 bg-slate-800/50 hover:border-slate-600'
-                                        }`}
-                                >
-                                    <div className="flex items-center gap-5">
-                                        <div className={`p-4 rounded-2xl transition-colors ${selectedPlan.id === plan.id ? 'bg-blue-500 text-white' : 'bg-slate-700 text-slate-400 group-hover:bg-slate-600'}`}>
-                                            <Calendar className="w-6 h-6" />
-                                        </div>
-                                        <div>
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-2xl font-black text-slate-100">₹{plan.monthlyAmount.toLocaleString()}</span>
-                                                <span className="text-slate-500 font-medium">/ mo</span>
-                                                {plan.interestRate === 0 && (
-                                                    <span className="animate-pulse bg-emerald-500/20 text-emerald-400 text-[10px] font-black px-2 py-0.5 rounded border border-emerald-500/30 uppercase">No Cost</span>
-                                                )}
-                                            </div>
-                                            <div className="flex items-center gap-2 mt-1">
-                                                <span className="text-slate-400 text-sm font-medium">{plan.tenure} Months</span>
-                                                <span className="w-1 h-1 bg-slate-600 rounded-full"></span>
-                                                <span className="text-slate-400 text-sm font-medium">{plan.interestRate}% Interest</span>
-                                            </div>
+                                <label key={plan.id} className={`flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all ${selectedPlan.id === plan.id ? 'border-teal-500 bg-teal-50/50' : 'border-slate-100 hover:border-slate-200'}`}>
+                                    <div className="flex items-center gap-3">
+                                        <input
+                                            type="radio"
+                                            name="emi"
+                                            checked={selectedPlan.id === plan.id}
+                                            onChange={() => setSelectedPlan(plan)}
+                                            className="w-4 h-4 accent-teal-600"
+                                        />
+                                        <div className="flex flex-col">
+                                            <span className="text-sm font-black text-slate-900">₹{plan.monthlyAmount.toLocaleString()} x {plan.tenure} months</span>
                                         </div>
                                     </div>
-                                    {plan.cashback > 0 && (
-                                        <div className="text-right">
-                                            <div className="text-emerald-400 text-sm font-bold flex items-center justify-end gap-1">
-                                                <Percent className="w-3 h-3" /> Cashback
-                                            </div>
-                                            <div className="text-emerald-400 text-lg font-black tracking-tight">₹{plan.cashback.toLocaleString()}</div>
-                                        </div>
+                                    {plan.interestRate === 0 && (
+                                        <span className="text-[10px] font-black bg-lime-400 text-lime-950 px-2 py-0.5 rounded italic">^0% EMI</span>
                                     )}
+                                </label>
+                            ))}
+                        </div>
+
+                        <button
+                            onClick={() => setShowSuccess(true)}
+                            className="w-full bg-teal-900 hover:bg-teal-950 text-white font-black py-4 rounded-xl transition-all shadow-lg active:scale-[0.98]"
+                        >
+                            Buy on {selectedPlan.tenure} months EMI
+                        </button>
+                    </div>
+
+                    {/* Trust Badges */}
+                    <div className="mt-8 grid grid-cols-2 gap-4">
+                        <div className="flex items-center gap-2 text-[10px] font-bold text-teal-800">
+                            <div className="bg-teal-100 p-1.5 rounded-lg"><CheckCircle2 className="w-4 h-4" /></div>
+                            Free Delivery
+                        </div>
+                        <div className="flex items-center gap-2 text-[10px] font-bold text-teal-800">
+                            <div className="bg-teal-100 p-1.5 rounded-lg"><ShieldCheck className="w-4 h-4" /></div>
+                            Secure Transaction
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Product Details Specs Section */}
+            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-10 space-y-8">
+                <h2 className="text-xl font-black text-slate-900 border-b border-slate-100 pb-4">Product Details</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div className="space-y-6">
+                        <p className="text-slate-600 leading-relaxed text-sm">
+                            {product.description}
+                        </p>
+                        <div className="space-y-3">
+                            {['Storage', 'Color', 'Display', 'Processor'].map(spec => (
+                                <div key={spec} className="flex border-b border-slate-50 py-2 text-sm">
+                                    <span className="w-32 text-slate-400 font-medium">{spec}</span>
+                                    <span className="font-bold text-slate-800">Available in multiple variants</span>
                                 </div>
                             ))}
                         </div>
                     </div>
-
-                    <div className="space-y-4 pt-4 border-t border-slate-700/50">
-                        <button
-                            className="w-full bg-blue-600 hover:bg-blue-500 text-white font-black text-lg py-6 rounded-[2rem] transition-all transform active:scale-[0.98] shadow-2xl shadow-blue-600/30 flex justify-center items-center gap-3 text-center"
-                            onClick={() => setShowSuccess(true)}
-                        >
-                            Secure this Plan <CheckCircle2 className="w-6 h-6" />
-                        </button>
-                        <p className="text-center text-slate-500 text-xs font-medium flex items-center justify-center gap-2">
-                            <Info className="w-3 h-3" /> T&C Apply • Secure Checkout via SNAPMINT Gateway
-                        </p>
+                    <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+                        <h4 className="font-bold text-teal-800 mb-4 flex items-center gap-2">
+                            <Percent className="w-4 h-4" /> Offers & Incentives
+                        </h4>
+                        <ul className="text-xs text-slate-500 space-y-3">
+                            <li className="flex items-start gap-2">
+                                <span className="text-teal-500">•</span>
+                                <div><strong>Insta-Approval:</strong> No credit score required for first-time buyers.</div>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="text-teal-500">•</span>
+                                <div><strong>Bonus Cashback:</strong> ₹1,500 extra off on your 3rd EMI payment.</div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
             {/* Success Modal */}
             {showSuccess && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-                    <div className="bg-slate-900 border border-slate-700 rounded-[3rem] p-10 max-w-md w-full text-center shadow-2xl animate-in zoom-in duration-300">
-                        <div className="w-20 h-20 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <CheckCircle2 className="w-12 h-12" />
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/40 backdrop-blur-sm">
+                    <div className="bg-white border border-slate-200 rounded-[2.5rem] p-10 max-w-md w-full text-center shadow-2xl animate-in zoom-in duration-300">
+                        <div className="w-16 h-16 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <CheckCircle2 className="w-8 h-8" />
                         </div>
-                        <h3 className="text-3xl font-black mb-4">Application Sent!</h3>
-                        <p className="text-slate-400 mb-8 leading-relaxed text-center">
-                            Your application for the <strong>{product.name} ({selectedVariant.name})</strong> on a <strong>{selectedPlan.tenure}-month</strong> fund-backed EMI plan has been received. Our team will verify your SNAPMINT profile shortly.
+                        <h3 className="text-2xl font-black text-slate-900 mb-4">Application Success!</h3>
+                        <p className="text-slate-500 mb-8 leading-relaxed text-sm">
+                            Your order for <strong>{product.name}</strong> has been initiated. Our verification team will contact you within 2 hours.
                         </p>
                         <button
                             onClick={() => setShowSuccess(false)}
-                            className="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-4 rounded-2xl transition-all"
+                            className="w-full bg-teal-700 hover:bg-teal-800 text-white font-bold py-4 rounded-xl transition-all shadow-lg"
                         >
-                            Back to Product
+                            Continue Shopping
                         </button>
                     </div>
                 </div>
