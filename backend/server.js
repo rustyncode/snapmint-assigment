@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 });
 
 const productRoutes = require('./routes/productRoutes');
-app.get('/', (req, res) => res.send('1Fi Backend API Running'));
+app.get('/', (req, res) => res.send('SNAPMINT Backend API Running'));
 app.use('/api/products', productRoutes);
 
 if (process.env.NODE_ENV !== 'production') {
