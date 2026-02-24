@@ -33,11 +33,11 @@ const ProductList = () => {
                 <div className="inline-flex items-center gap-2 bg-blue-500/10 text-blue-400 px-4 py-2 rounded-full border border-blue-500/20 mb-6 text-sm font-bold uppercase tracking-widest">
                     <Star className="w-4 h-4 fill-blue-400" /> Exclusive EMI Collection
                 </div>
-                <h2 className="text-6xl font-black mb-6 tracking-tight bg-gradient-to-r from-white to-slate-500 bg-clip-text text-transparent">
-                    The Future of Payments.
-                </h2>
-                <p className="text-slate-400 text-xl max-w-2xl mx-auto leading-relaxed">
-                    Select premium smartphones with EMI plans backed by secure mutual funds. Get rewarded while you pay.
+                <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter">
+                    Smart EMI with <span className="text-blue-500">SNAPMINT</span>
+                </h1>
+                <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+                    Experience the next generation of mobile financing. Secure, fund-backed EMI plans designed for the modern user.
                 </p>
             </div>
 

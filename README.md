@@ -1,4 +1,4 @@
-# 1Fi Full Stack Developer Assignment
+# SNAPMINT Full Stack Developer Assignment
 
 A premium full-stack product EMI application built with React, Node.js, and MongoDB. This application allows users to explore smartphones and choose from various EMI plans backed by mutual funds.
 

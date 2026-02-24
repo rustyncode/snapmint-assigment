@@ -8,7 +8,7 @@ const ProductDetails = () => {
     const [product, setProduct] = useState(null);
     const [selectedVariant, setSelectedVariant] = useState(null);
     const [selectedPlan, setSelectedPlan] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [showSuccess, setShowSuccess] = useState(false);
 
     useEffect(() => {
         const apiUrl = import.meta.env.VITE_API_URL;
@@ -26,9 +26,9 @@ const ProductDetails = () => {
     }, [id]);
 
     if (loading) return (
-        <div className="flex flex-col justify-center items-center h-screen space-y-4">
-            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-blue-400 font-medium animate-pulse">Fetching product details...</p>
+        <div className="flex flex-col justify-center items-center h-screen space-y-4 text-blue-400">
+            <div className="w-12 h-12 border-4 border-current border-t-transparent rounded-full animate-spin"></div>
+            <p className="font-medium animate-pulse">Fetching product details...</p>
         </div>
     );
 
@@ -56,7 +56,7 @@ const ProductDetails = () => {
     };
 
     return (
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto px-4">
             <Link to="/" className="inline-flex items-center gap-2 text-slate-400 hover:text-white mb-8 transition-colors">
                 <ArrowLeft className="w-4 h-4" /> Back to Products
             </Link>
@@ -144,7 +144,7 @@ const ProductDetails = () => {
                     <div className="mb-12">
                         <div className="flex justify-between items-center mb-6">
                             <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Available EMI Plans</h3>
-                            <span className="text-[10px] text-blue-400 bg-blue-400/10 px-2 py-0.5 rounded border border-blue-400/20 font-bold">1Fi EXCLUSIVE</span>
+                            <span className="text-[10px] text-blue-400 bg-blue-400/10 px-2 py-0.5 rounded border border-blue-400/20 font-bold">SNAPMINT EXCLUSIVE</span>
                         </div>
                         <div className="space-y-4">
                             {product.emiPlans.map(plan => (
@@ -190,17 +190,38 @@ const ProductDetails = () => {
 
                     <div className="space-y-4 pt-4 border-t border-slate-700/50">
                         <button
-                            className="w-full bg-blue-600 hover:bg-blue-500 text-white font-black text-lg py-6 rounded-[2rem] transition-all transform active:scale-[0.98] shadow-2xl shadow-blue-600/30 flex justify-center items-center gap-3"
-                            onClick={() => alert(`Proceeding with ${product.name} - ${selectedVariant.name} on ${selectedPlan.tenure} months EMI strategy`)}
+                            className="w-full bg-blue-600 hover:bg-blue-500 text-white font-black text-lg py-6 rounded-[2rem] transition-all transform active:scale-[0.98] shadow-2xl shadow-blue-600/30 flex justify-center items-center gap-3 text-center"
+                            onClick={() => setShowSuccess(true)}
                         >
                             Secure this Plan <CheckCircle2 className="w-6 h-6" />
                         </button>
                         <p className="text-center text-slate-500 text-xs font-medium flex items-center justify-center gap-2">
-                            <Info className="w-3 h-3" /> T&C Apply • Secure Checkout via 1Fi Gateway
+                            <Info className="w-3 h-3" /> T&C Apply • Secure Checkout via SNAPMINT Gateway
                         </p>
                     </div>
                 </div>
             </div>
+
+            {/* Success Modal */}
+            {showSuccess && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+                    <div className="bg-slate-900 border border-slate-700 rounded-[3rem] p-10 max-w-md w-full text-center shadow-2xl animate-in zoom-in duration-300">
+                        <div className="w-20 h-20 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <CheckCircle2 className="w-12 h-12" />
+                        </div>
+                        <h3 className="text-3xl font-black mb-4">Application Sent!</h3>
+                        <p className="text-slate-400 mb-8 leading-relaxed text-center">
+                            Your application for the <strong>{product.name} ({selectedVariant.name})</strong> on a <strong>{selectedPlan.tenure}-month</strong> fund-backed EMI plan has been received. Our team will verify your SNAPMINT profile shortly.
+                        </p>
+                        <button
+                            onClick={() => setShowSuccess(false)}
+                            className="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-4 rounded-2xl transition-all"
+                        >
+                            Back to Product
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
