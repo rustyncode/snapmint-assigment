@@ -18,13 +18,26 @@ if (!MONGODB_URI && process.env.NODE_ENV !== 'production') {
 
 if (MONGODB_URI) {
     mongoose.connect(MONGODB_URI)
-        .then(() => console.log('Connected to Cloud MongoDB'))
-        .catch(err => console.error('MongoDB connection error:', err));
+        .then(() => console.log('Successfully connected to Cloud MongoDB'))
+        .catch(err => {
+            console.error('CRITICAL: Cloud MongoDB connection error:', err);
+            process.env.DB_STATUS = 'DISCONNECTED';
+        });
+} else {
+    console.error('WARNING: MONGODB_URI is totally missing from environment.');
 }
 
+// Middleware to check health
 app.use((req, res, next) => {
     if (!process.env.MONGODB_URI) {
-        return res.status(500).json({ error: 'MONGODB_URI not configured in Vercel Environment Variables' });
+        console.error('Environment check failed: MONGODB_URI is missing for request:', req.url);
+        // Only return 500 if it's an API route that actually needs the DB
+        if (req.url.startsWith('/api/products') || req.url.startsWith('/products/')) {
+            return res.status(500).json({
+                error: 'Database connection not configured',
+                tip: 'Please set MONGODB_URI in your Vercel project environment variables.'
+            });
+        }
     }
     next();
 });
